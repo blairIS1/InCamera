@@ -10,10 +10,11 @@ import UIKit
 import MobileCoreServices
 
 class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UIAlertViewDelegate, UINavigationControllerDelegate {
+
+    @IBOutlet weak var imageView: backgroundImageView!
     
-    @IBOutlet weak var backgroundImage: UIImageView!
+    var newMedia : Bool?
     
-    var cameraUI:UIImagePickerController = UIImagePickerController()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: NSBundle?){
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
@@ -28,7 +29,6 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.presentCamera()
         // Do any additional setup after loading the view, typically from a nib.
     }
 
@@ -41,47 +41,69 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     //    self.presentCamera()
     //}
     
+  
     //program mark - Camera
-    
-    func presentCamera(){
-        cameraUI = UIImagePickerController()
-        cameraUI.delegate = self
-        cameraUI.sourceType = UIImagePickerControllerSourceType.Camera
-        cameraUI.mediaTypes = [kUTTypeImage]
-        cameraUI.allowsEditing = false
-        self.presentViewController(cameraUI, animated: true, completion: nil)
+    @IBAction func useCamera(sender: AnyObject) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
+            imagePicker.mediaTypes = [kUTTypeImage as NSString]
+            imagePicker.allowsEditing = false
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+            newMedia = true
+        }
         
     }
+    
+    @IBAction func useCameraRoll(sender: AnyObject) {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.SavedPhotosAlbum){
+            let imagePicker = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
+            imagePicker.mediaTypes = [kUTTypeImage as NSString]
+            imagePicker.allowsEditing = false
+            self.presentViewController(imagePicker, animated: true, completion: nil)
+            newMedia = false
+        }
+    }
+  
 
     //program mark - Image
+    
+    func imagePickerController(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info: [NSObject : AnyObject]) {
+        var mediaType:NSString = info[UIImagePickerControllerMediaType] as NSString
+        self.dismissViewControllerAnimated(true, completion: nil)
+        
+        if mediaType.isEqualToString(kUTTypeImage as NSString){
+            let image = info[UIImagePickerControllerOriginalImage] as UIImage
+            imageView.image = image
+            if newMedia == true{
+                UIImageWriteToSavedPhotosAlbum(image, self, "image: didFinishSavingWithError", nil)
+            }else if mediaType.isEqualToString(kUTTypeMovie as NSString){
+                //code to support video here
+                
+            }
+            
+        }
+        
+    }
+    func image(image: UIImage, didFinishSavingWithError error: NSErrorPointer, contextInfo: UnsafeMutablePointer<Void>){
+        if error != nil{
+            let alert = UIAlertController(title: "Save Failed", message: "Falied to save image", preferredStyle: UIAlertControllerStyle.Alert)
+            
+            let cancelAction = UIAlertAction(title: "OK", style: .Cancel, handler: nil)
+            alert.addAction(cancelAction)
+            self.presentViewController(alert, animated: true, completion: nil)
+        }
+    }
+
+    
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController!, didFinishPickingMediaWithInfo info:NSDictionary) {
-        
-        var mediaType:NSString = info.objectForKey(UIImagePickerControllerEditedImage) as NSString
-        var imageToSave:UIImage
-        imageToSave = info.objectForKey(UIImagePickerControllerOriginalImage) as UIImage
-        UIImageWriteToSavedPhotosAlbum(imageToSave, nil, nil , nil)
-        self.savedImage()
-        self.dismissViewControllerAnimated(true, completion: nil)
-    
-    }
-    
-    func savedImage(){
-        var alert: UIAlertView = UIAlertView()
-        alert.title = "Saved!"
-        alert.message = "Your picture was saved to Camera Roll"
-        alert.delegate = self
-        alert.addButtonWithTitle("Awesome")
-        alert.show()
-    }
-    
-    func alertView(alertView: UIAlertView!, clickedButtonAtIndex buttonIndex: Int) {
-        NSLog("Did dismiss button: %d", buttonIndex)
-        self.presentCamera()
-    }
+ 
 }
 

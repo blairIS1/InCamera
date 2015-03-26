@@ -16,21 +16,43 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="07v-f5-DGd">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FnT-mc-xgy" customClass="backgroundImageView" customModule="InCamera" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="kl7-Fd-aJg">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem title="Camera" id="GoB-Px-HeQ">
+                                        <connections>
+                                            <action selector="useCamera:" destination="BYZ-38-t0r" id="rjK-mG-fch"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Camera Roll" id="dIb-Id-RcI">
+                                        <connections>
+                                            <action selector="useCameraRoll:" destination="BYZ-38-t0r" id="CiS-Yn-eMB"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="240" verticalHuggingPriority="240" verticalCompressionResistancePriority="700" translatesAutoresizingMaskIntoConstraints="NO" id="FnT-mc-xgy" customClass="backgroundImageView" customModule="InCamera" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="600" height="528"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kl7-Fd-aJg" firstAttribute="top" secondItem="FnT-mc-xgy" secondAttribute="bottom" id="DUY-WE-Z2s"/>
+                            <constraint firstItem="kl7-Fd-aJg" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="U29-M5-eou"/>
+                            <constraint firstItem="FnT-mc-xgy" firstAttribute="leading" secondItem="kl7-Fd-aJg" secondAttribute="leading" id="WZO-5v-Tn9"/>
+                            <constraint firstAttribute="trailing" secondItem="FnT-mc-xgy" secondAttribute="trailing" id="ZXB-A4-qDx"/>
+                            <constraint firstItem="kl7-Fd-aJg" firstAttribute="centerX" secondItem="FnT-mc-xgy" secondAttribute="centerX" id="c0C-Hb-23D"/>
+                            <constraint firstItem="FnT-mc-xgy" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="qbQ-cZ-Jn8"/>
+                            <constraint firstItem="kl7-Fd-aJg" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="wnj-d0-c0g"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="backgroundImage" destination="FnT-mc-xgy" id="mFk-PR-yaN"/>
+                        <outlet property="imageView" destination="FnT-mc-xgy" id="hVe-DM-WNp"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="154" y="415"/>
         </scene>
     </scenes>
 </document>
